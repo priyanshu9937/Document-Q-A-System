@@ -1,0 +1,6 @@
+Backend/uploads/*
+Backend/faiss_index/*
+*.pyc
+__pycache__/
+.venv/
+.env
