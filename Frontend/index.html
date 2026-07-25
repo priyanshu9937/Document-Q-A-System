@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMind | Document Q&A System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="glass-bg-glow"></div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <circle cx="10" cy="13" r="2"/>
+                    <path d="m20 17-1.42-1.42a2 2 0 0 0-2.83 0L12 19"/>
+                </svg>
+                <div class="logo-text">
+                    <h1>Docu<span>Mind</span></h1>
+                    <p>AI-Powered Document RAG System</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <a href="/docs" target="_blank" class="docs-link" title="Swagger API Documentation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+                        <path d="M6 6h10"/>
+                        <path d="M6 10h10"/>
+                    </svg>
+                    <span>API Docs</span>
+                </a>
+                
+                <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle light/dark mode">
+                    <!-- Moon Icon (Dark Mode) -->
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                    </svg>
+                    <!-- Sun Icon (Light Mode) -->
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2"/>
+                        <path d="M12 20v2"/>
+                        <path d="m4.93 4.93 1.41 1.41"/>
+                        <path d="m17.66 17.66 1.41 1.41"/>
+                        <path d="M2 12h2"/>
+                        <path d="M20 12h2"/>
+                        <path d="m6.34 17.66-1.41 1.41"/>
+                        <path d="m19.07 4.93-1.41 1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="app-main">
+            <!-- Left Panel: Ingestion -->
+            <section class="panel upload-panel">
+                <div class="panel-header">
+                    <h2>1. Ingest Knowledge</h2>
+                    <p>Upload your PDF document to chunk, index, and store inside FAISS database.</p>
+                </div>
+                
+                <div class="panel-body">
+                    <!-- Drag and Drop Box -->
+                    <div id="dropzone" class="dropzone">
+                        <input type="file" id="file-input" accept="application/pdf" style="display: none;">
+                        <div class="dropzone-content">
+                            <div class="icon-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <p class="main-text">Drag and drop your PDF here</p>
+                            <p class="sub-text">or <span class="browse-link">browse files</span></p>
+                            <p class="limit-text">Supported format: PDF only</p>
+                        </div>
+                    </div>
+
+                    <!-- Selected File Info (Hidden by default) -->
+                    <div id="file-info-card" class="file-info-card" style="display: none;">
+                        <div class="file-details">
+                            <div class="file-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                            </div>
+                            <div class="file-meta">
+                                <div id="file-name" class="file-name">filename.pdf</div>
+                                <div id="file-size" class="file-size">0 KB</div>
+                            </div>
+                        </div>
+                        <button id="remove-file-btn" class="remove-btn" title="Remove File">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Upload Button & Loading -->
+                    <button id="upload-btn" class="btn btn-primary btn-block" disabled>
+                        <span>Index PDF Document</span>
+                    </button>
+                    
+                    <!-- Progress / Status Messages -->
+                    <div id="upload-status" class="status-box" style="display: none;">
+                        <div class="loader-spinner" style="display: none;"></div>
+                        <div class="status-icon"></div>
+                        <div class="status-message">Processing file...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Q&A -->
+            <section class="panel qa-panel">
+                <div class="panel-header">
+                    <h2>2. Query Document</h2>
+                    <p>Ask natural language questions to extract facts strictly verified by the uploaded content.</p>
+                </div>
+                
+                <div class="panel-body flex-column">
+                    <!-- Q&A Form -->
+                    <div class="qa-input-container">
+                        <textarea id="question-input" placeholder="Type your question here (e.g., What are the main findings in Section 3?)..." rows="2" disabled></textarea>
+                        <button id="ask-btn" class="btn btn-accent" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <span>Ask Gemini</span>
+                        </button>
+                    </div>
+
+                    <!-- Prompt constraint disclaimer -->
+                    <div class="disclaimer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        <span>Answers are strictly generated using facts from the uploaded document.</span>
+                    </div>
+
+                    <!-- Q&A Output Screen -->
+                    <div id="output-screen" class="output-screen empty-state">
+                        <!-- Initial Empty View -->
+                        <div id="output-placeholder" class="output-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <h3>Awaiting Document Upload</h3>
+                            <p>Once you upload and index a PDF, you'll be able to ask questions and view responses here.</p>
+                        </div>
+
+                        <!-- Chat Response Box (Hidden initially) -->
+                        <div id="qa-result-box" class="qa-result-box" style="display: none;">
+                            <div class="result-section">
+                                <div class="section-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    <span>Question</span>
+                                </div>
+                                <h3 id="response-question" class="question-display">What is the question?</h3>
+                            </div>
+
+                            <div class="result-divider"></div>
+
+                            <div class="result-section">
+                                <div class="section-label">
+                                    <svg class="ai-sparkle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/>
+                                    </svg>
+                                    <span>Gemini's Answer</span>
+                                </div>
+                                <div id="response-answer" class="answer-display">The answer goes here.</div>
+                            </div>
+
+                            <div class="result-divider"></div>
+
+                            <!-- Source Chunks Section -->
+                            <div class="result-section">
+                                <div class="section-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 22V4c0-.5.2-1 .6-1.4C5 2.2 5.5 2 6 2h12c.5 0 1 .2 1.4.6.4.4.6.9.6 1.4v18l-8-4-8 4z"/>
+                                    </svg>
+                                    <span>Retrieved Context Sources (Top 3 FAISS Chunks)</span>
+                                </div>
+                                <div id="source-chunks-container" class="source-chunks-container">
+                                    <!-- Accordion items will be generated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="qa-loading-state" class="qa-loading-state" style="display: none;">
+                            <div class="sk-chase">
+                                <div class="sk-chase-dot"></div>
+                                <div class="sk-chase-dot"></div>
+                                <div class="sk-chase-dot"></div>
+                                <div class="sk-chase-dot"></div>
+                                <div class="sk-chase-dot"></div>
+                                <div class="sk-chase-dot"></div>
+                            </div>
+                            <p>Consulting database & invoking Gemini...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Built with FastAPI, LangChain, FAISS, & Google Gemini 2.5 Flash.</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
