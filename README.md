@@ -1,4 +1,4 @@
-# 🚀 Document Q&A System (Backend)
+# 🚀 Document Q&A System 
 
 Production-ready **Document Q&A Backend** built with **Python 3.12, FastAPI, Google Gemini, LangChain, FAISS, and PyMuPDF**.
 
