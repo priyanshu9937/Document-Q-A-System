@@ -40,10 +40,8 @@ UPLOAD_DIR = backend_dir / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 STATIC_DIR = backend_dir.parent / "Frontend"
-STATIC_DIR.mkdir(parents=True, exist_ok=True)
-
-# Mount static files directory
-app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 class AskRequest(BaseModel):
     question: str
