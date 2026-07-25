@@ -1,206 +1,108 @@
-# 🚀 Document Q&A System 
+# 🚀 Document Q&A System
 
-Production-ready **Document Q&A Backend** built with **Python 3.12, FastAPI, Google Gemini, LangChain, FAISS, and PyMuPDF**.
-
----
+Production-ready Document Q&A app with a Streamlit frontend and a Python backend. It supports uploading a PDF, extracting text, indexing local chunks, and asking questions about the document.
 
 ## 📖 Project Overview
 
-This project is a backend implementation of a **Retrieval-Augmented Generation (RAG)** based Document Question Answering System.
+This project is a Document Question Answering system built with Python, Streamlit, FastAPI, PyMuPDF, and local JSON-based chunk storage.
 
 It allows users to:
 
 - Upload PDF documents
 - Extract text using PyMuPDF
-- Split text into semantic chunks
-- Generate embeddings using Google Embedding API
-- Store embeddings in a local FAISS vector database
-- Retrieve relevant document chunks
-- Generate context-aware answers using Google Gemini 2.5 Flash
-
----
-
-
-Server:
-
-```
-http://127.0.0.1:8002/docs
-```
+- Split text into chunks
+- Store chunks locally for retrieval
+- Ask questions about the uploaded document
 
 ## ✨ Features
 
-- 📄 PDF Upload API
-- 📑 PDF Text Extraction using PyMuPDF
-- ✂️ Semantic Text Chunking
-- 🧠 Google Embedding API
-- ⚡ FAISS Vector Database
-- 🤖 Google Gemini 2.5 Flash Integration
-- 🚀 FastAPI REST APIs
-- 📚 Auto-generated Swagger Documentation
+- 📄 PDF upload and ingestion
+- 📑 PDF text extraction using PyMuPDF
+- ✂️ Text chunking
+- 🔎 Keyword-based retrieval from local chunks
+- 🤖 Local fallback answer generation
+- 🚀 Streamlit web app for easy use
+- 📚 Simple deployment support for Streamlit Community Cloud
 
----
+## 🛠 Technology Stack
 
-# 🛠 Technology Stack
+- Python 3.12
+- Streamlit
+- FastAPI
+- PyMuPDF
+- Local JSON-based chunk storage
+- Optional Gemini API key support via environment variables
 
-| Technology | Purpose |
-|------------|---------|
-| Python 3.12 | Programming Language |
-| FastAPI | Backend Framework |
-| Google Gemini 2.5 Flash | Large Language Model |
-| Google Embedding API | Embeddings |
-| LangChain | RAG Orchestration |
-| FAISS | Vector Database |
-| PyMuPDF | PDF Text Extraction |
-
----
-
-# 🏗 Architecture
+## 📂 Project Structure
 
 ```text
-                  +----------------+
-                  |     Client     |
-                  +--------+-------+
-                           |
-                           v
-                 +-------------------+
-                 | FastAPI (/upload) |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 |    PyMuPDF        |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 | Text Chunking     |
-                 | (LangChain)       |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 | Google Embeddings |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 |      FAISS        |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 |    Retriever      |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 | Gemini 2.5 Flash  |
-                 +--------+----------+
-                          |
-                          v
-                 +-------------------+
-                 |    Response API   |
-                 +-------------------+
-```
-
----
-
-# 🔄 RAG Workflow
-
-1. Upload PDF
-2. Extract text from PDF
-3. Split text into chunks
-4. Generate embeddings
-5. Store embeddings in FAISS
-6. Retrieve relevant chunks
-7. Send retrieved context + user question to Gemini
-8. Return the generated answer
-
----
-
-# 📂 Folder Structure
-
-```text
-Backend/
-│
-├── uploads/
-│
-├── faiss_index/
-│
-├── services/
-│   ├── pdf_reader.py
-│   ├── text_chunker.py
-│   │
-│   ├── vector_store/
-│   │   ├── faiss_store.py
-│   │   └── retriever.py
-│   │
-│   └── llm/
-│       └── gemini.py
-│
-├── main.py
+Document QA system/
+├── app.py
 ├── requirements.txt
-└── .env.example
+├── .streamlit/
+│   └── config.toml
+├── Backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── uploads/
+│   ├── faiss_index/
+│   └── services/
+│       ├── pdf_reader.py
+│       ├── text_chunker.py
+│       ├── vector_store/
+│       │   ├── faiss_store.py
+│       │   └── retriever.py
+│       └── llm/
+│           └── gemini.py
+└── README.md
 ```
 
----
-
-# 🚀 Installation
-
-## 1. Clone Repository
-
-```bash
-git clone <repository-url>
-
-cd Backend
-```
-
----
-
-## 2. Create Virtual Environment
-
-### Windows
+## 🚀 Run Locally
 
 ```bash
 python -m venv .venv
-
 .venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-python3 -m venv .venv
-
-source .venv/bin/activate
-```
-
----
-
-## 3. Install Dependencies
-
-```bash
 pip install -r requirements.txt
+streamlit run app.py
 ```
 
----
+## ☁️ Streamlit Community Cloud
 
-## 4. Create Environment File
+This repository is prepared for deployment on Streamlit Community Cloud.
 
-Create a file named `.env`
+1. Push this repository to GitHub.
+2. Open Streamlit Community Cloud.
+3. Select the repository and main branch.
+4. Set the main file to app.py.
+5. Deploy.
+
+## 🔐 Environment Variables
+
+Create a `.env` file if you want to use Gemini-based configuration.
 
 ```env
-GOOGLE_API_KEY=your_google_api_key
+GEMINI_API_KEY=your_google_api_key_here
 ```
 
----
+=======
+### 4. Configure environment variables
+Create a .env file in the project root if you want to use the optional Gemini-related configuration.
 
-## 5. Run Server
+```ini
+GEMINI_API_KEY=your_api_key_here
+```
 
+> Do not push your .env file to GitHub. The repository is already configured to ignore it.
+
+## Run Locally
+From the Backend folder, run:
+
+>>>>>>> 332ceff (Prepare Streamlit Community Cloud deployment)
 ```bash
-uvicorn main:app --reload
+python -m uvicorn main:app --host 127.0.0.1 --port 8002
 ```
 
+<<<<<<< HEAD
 Server:
 
 ```
@@ -355,3 +257,40 @@ __pycache__/
 **Priyanshu Vishwakarma**
 
 GitHub: https://github.com/priyanshu9937
+=======
+### Local URLs
+- Swagger docs: http://127.0.0.1:8002/docs
+- Redoc docs: http://127.0.0.1:8002/redoc
+- Health check: http://127.0.0.1:8002/health
+
+## API Endpoints
+- GET / - API root information
+- GET /health - Health check
+- POST /upload - Upload a PDF file and index it locally
+- POST /ask - Ask a question about the uploaded document
+
+## Example Requests
+
+### Upload a PDF
+```bash
+curl -X POST "http://127.0.0.1:8002/upload" \
+  -H "accept: application/json" \
+  -F "file=@/path/to/file.pdf"
+```
+
+### Ask a question
+```bash
+curl -X POST "http://127.0.0.1:8002/ask" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d "{\"question\": \"What is this document about?\"}"
+```
+
+## Notes
+- The project is currently backend-only.
+- Uploaded PDFs and generated chunk indexes are stored locally and are ignored by Git.
+- The app does not require a frontend folder to run.
+
+## License
+MIT
+>>>>>>> 332ceff (Prepare Streamlit Community Cloud deployment)
