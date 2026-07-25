@@ -20,6 +20,13 @@ It allows users to:
 
 ---
 
+
+Server:
+
+```
+http://127.0.0.1:8002
+```
+
 ## ✨ Features
 
 - 📄 PDF Upload API
