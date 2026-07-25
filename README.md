@@ -229,14 +229,10 @@ Google Gemini 2.5 Flash acts as the generator in our pipeline. Once FAISS retrie
 - User authentication and conversational memory (chat history).
 - Switch to a cloud-based vector DB (e.g., Pinecone/Weaviate) for horizontal scaling.
 
-## 🤝 Contributing
-Contributions are always welcome! Please see the `CONTRIBUTING.md` for guidelines.
 
-## 📜 License
-This project is licensed under the [MIT License](LICENSE).
 
 ## 👤 Author
-**Rudra05x** - [GitHub Profile](https://github.com/Rudra05x)
+**priyanshu9937** - [GitHub Profile](https://github.com/priyanshu9937)
 
 ## 🙏 Acknowledgements
 - [FastAPI](https://fastapi.tiangolo.com/)
